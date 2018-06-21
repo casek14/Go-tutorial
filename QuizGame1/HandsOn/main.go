@@ -5,10 +5,12 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 )
 
 func main() {
 	csvFile := flag.String("csv", "quiz.csv", "A .csv file with question/answer format")
+	timeLimit := flag.Int("time-limit",30,"Time limit for quiz in seconds")
 	flag.Parse()
 
 	file, err := os.Open(*csvFile)
@@ -23,7 +25,33 @@ func main() {
 	}
 
 	problems := parseLines(lines)
-	ask(problems)
+	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
+
+
+	var correct = 0
+problemloop:
+	for i, p := range problems {
+		fmt.Printf("Question #%d: %s = ", i, p.question)
+		answerCh := make(chan string)
+		go func() {
+			var answer string
+			fmt.Scanf("%s\n", &answer)
+			answerCh <- answer
+		}()
+		select {
+		case <-timer.C:
+			fmt.Printf("You answered %d out of %d correct !\nk", correct, len(problems))
+			break problemloop
+		case answer :=   <- answerCh:
+			if answer == p.answer {
+				correct++
+			}
+		}
+
+
+	}
+	fmt.Printf("\nYou answered %d out of %d correct !\n", correct, len(problems))
+
 }
 
 type problem struct {
@@ -48,15 +76,5 @@ func printEror(msg string) {
 	os.Exit(1)
 }
 
-func ask(problems []problem) {
-	var correct = 0
-	for i, p := range problems {
-		fmt.Printf("Question #%d: %s = ", i, p.question)
-		var answer string
-		fmt.Scanf("%s\n", &answer)
-		if answer == p.answer {
-			correct++
-		}
-	}
-	fmt.Printf("You answered %d out of %d correct !\nk", correct, len(problems))
-}
+
+
