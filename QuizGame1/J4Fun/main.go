@@ -18,6 +18,7 @@ func main() {
 
 	url := BASE_URL+*city+token
 	fmt.Printf("URL=%s\n",url)
+	
 	var result Result
 	jsonFile, err := os.Open("test-weather.json")
 
@@ -31,7 +32,7 @@ func main() {
 	jsonParser := json.NewDecoder(jsonFile)
 	jsonParser.Decode(&result)
 
-	fmt.Println(result.Main.Temperature)
+	result.printResult()
 
 
 
@@ -50,11 +51,32 @@ type Result struct {
 		MaxTemp float32 `json:"temp_max"`
 	} `json:"main"`
 	Wind struct{
-		Speed int `json:"speed"`
+		Speed float32 `json:"speed"`
 	} `json:"wind"`
+	Clouds struct{
+		all int `json:"all"`
+	} `json:"clouds"`
 	Sys struct{
 		Country string `json:"country"`
-		Sunrise int `json:"sunrise"`
-		Sunset int `json:"sunset"`
+		Sunrise string `json:"sunrise"`
+		Sunset string `json:"sunset"`
 	} `json:"sys"`
+	Name string `json:"name"`
 }
+
+func (result Result) printResult(){
+
+	fmt.Println("+-----------------------------------------+")
+	fmt.Printf("|    Weather in location %s,%s 	       |\n",result.Name,result.Sys.Country)
+
+	fmt.Println("+--------------------+--------------------+")
+
+	fmt.Printf("|    Temperature     |      %.1f °C       |\n",(result.Main.Temperature - 272.15))
+	fmt.Printf("|    Humidity        |      %d %s          |\n",result.Main.Humidity,"%")
+	fmt.Printf("|    Pressure        |      %d %s      |\n",result.Main.Pressure,"hPa")
+	fmt.Printf("|    Wind            |      %.1f %s       |\n",result.Wind.Speed,"m/s")
+	fmt.Printf("|    Cloudiness      |      %d %s           |\n",result.Clouds.all,"%")
+	fmt.Printf("+--------------------+--------------------+\n")
+
+
+	}
