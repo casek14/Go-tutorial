@@ -1,0 +1,16 @@
+{
+    "redirects": [
+        {
+              "request_symbol": "CUS",
+              "redirect_page": "Pozdravy_z_Prdele"
+        },
+        {
+              "request_symbol": "hovno",
+              "redirect_page": "Bla_bla_bLa_blA"
+        },
+        {
+              "request_symbol": "TRETICE",
+              "redirect_page": "Do_tretice_vseho_dobreho"
+        }
+    ]
+}

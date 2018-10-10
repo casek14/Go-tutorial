@@ -12,13 +12,13 @@ func main() {
 	const token string = "&appid=0b520b45e3bb6ba695cd4d3da4adf80b"
 	const BASE_URL string = "api.openweathermap.org/data/2.5/weather?q="
 
-	
+
 	city := flag.String("city","Prague", "Name of the city you want to receive the actual weather")
 	flag.Parse()
 
 	url := BASE_URL+*city+token
 	fmt.Printf("URL=%s\n",url)
-	
+
 	var result Result
 	jsonFile, err := os.Open("test-weather.json")
 

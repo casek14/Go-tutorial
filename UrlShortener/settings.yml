@@ -1,0 +1,10 @@
+redirects:
+  - Hovno1:
+      request_symbol: "CUS"
+      redirect_page: "Pozdravy_z_Prdele"
+  - Hovno2:
+      request_symbol: "hovno"
+      redirect_page: "Bla_bla_bLa_blA"
+  - Hovno3:
+      request_symbol: "TRETICE"
+      redirect_page: "Do_tretice_vseho_dobreho"
